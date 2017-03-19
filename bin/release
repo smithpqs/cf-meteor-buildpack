@@ -16,18 +16,29 @@ extract_mongo_url() {
   #echo "MONGO_URL: $MONGO_URL"
 }
 
+extract_mongo_oplog() {
+  # Set if not already present.
+  if [ -z "${MONGO_OPLOG_URL}" ]; then
+    #echo "Pulling MONGO_OPLOG_URL from VCAP_SERVICES"
+    # Find the first service key that contains "mongo", then grab the 'oplog' key beneath it.
+    export MONGO_OPLOG_URL=`echo $VCAP_SERVICES | $jq 'to_entries|map(select(.key|contains("mongo")))[0]|.value[0].credentials|.oplog|. // empty'`
+  fi
+  #echo "MONGO_URL: $MONGO_URL"
+}
+
 extract_root_url() {
   #echo "Pulling ROOT_URL from VCAP_APPLICATION"
   DOMAIN=`echo $VCAP_APPLICATION | $jq '.uris[0]' | sed -e 's/^"//'  -e 's/"$//'`
-  export ROOT_URL="http://$DOMAIN"
+  export ROOT_URL="https://$DOMAIN"
   #echo "ROOT_URL: $ROOT_URL"
 }
 
 extract_mongo_url
+extract_mongo_oplog_url
 extract_root_url
 
 cat <<-YAML
 ---
 default_process_types:
-  web: MONGO_URL=$MONGO_URL ROOT_URL=$ROOT_URL vendor/node/bin/node deploy/bundle/main.js
+  web: MONGO_URL=$MONGO_URL MONGO_OPLOG_URL=$MONGO_OPLOG_URL ROOT_URL=$ROOT_URL vendor/node/bin/node deploy/bundle/main.js
 YAML
