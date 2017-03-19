@@ -18,6 +18,8 @@ status() {
 }
 
 node_version=4.7.3
+status "PQSPQSPQS BUILD_DIR=$BUILD_DIR"
+status "PQSPQSPQS CACHE_DIR=$CACHE_DIR"
 
 install_node() {
   if [ -f "$BUILD_DIR/.vendor/node/bin/node" ] ; then
