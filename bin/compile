@@ -84,6 +84,9 @@ build() {
     npm install 2>&1 | indent
     
     status "sleeping"
+        df -kh
+    echo "**********"
+
     sleep 600
     
     mv $BUILD_DIR/.vendor $BUILD_DIR/vendor
