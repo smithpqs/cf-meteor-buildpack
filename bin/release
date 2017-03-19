@@ -16,7 +16,7 @@ extract_mongo_url() {
   #echo "MONGO_URL: $MONGO_URL"
 }
 
-extract_mongo_oplog() {
+extract_mongo_oplog_url() {
   # Set if not already present.
   if [ -z "${MONGO_OPLOG_URL}" ]; then
     #echo "Pulling MONGO_OPLOG_URL from VCAP_SERVICES"
