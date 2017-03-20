@@ -18,8 +18,6 @@ status() {
 }
 
 node_version=4.7.3
-status "PQSPQSPQS BUILD_DIR=$BUILD_DIR"
-status "PQSPQSPQS CACHE_DIR=$CACHE_DIR"
 
 install_node() {
   if [ -f "$BUILD_DIR/.vendor/node/bin/node" ] ; then
@@ -75,20 +73,9 @@ build() {
     status "Building meteor bundle"
     meteor build --directory deploy --server http://localhost:3000
     cd deploy/bundle/programs/server
-    echo "**********"
-    df -kh
-    echo "**********"
-    ls /tmp
-    echo "**********"
     status "Installing npm dependencies"
     npm install 2>&1 | indent
-    
-    status "sleeping"
-        df -kh
-    echo "**********"
-
-    sleep 600
-    
+        
     mv $BUILD_DIR/.vendor $BUILD_DIR/vendor
   )
 }
